@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ciclo</title>
+<meta name="theme-color" content="#e5287e">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAZIElEQVR4nO2de7BdVZngf99a+zzvIwkgBAINSUiAhId0SKOjFjQgiYCgXQR6DM34ZLR7xu7StpygkmR6fFQ7ZVU7djvaoqgwUkQbsNEiIA1aU610RKEJjyQkECEv6Lxucs9zr/XNH2vvc/Y5997kJjk3yVTflUqdffdez9/61re+9a21zxHGGZTlhiXzRVbd5AC2LFheLqlf4IgXOfULDXKmF+YqXhAQANGQWEIO4RNkjPuIJulG3h932q74aR1ktDwz+RzouXTUHbXCeq9sjiLWCKwu1c1T8tA3KwC6ZIll3jyVlSv9eLjKwaOALrnPpuC3XfTZ+QXhVoe/0YvO6jM5YjwOT0Nj2vCzDRofwDFBHSH8boittB3wO+OncUYTpLy1RAYiYxiOmxhhkxj5ofd8b+BH33ouMFtiZdUqdzC2B+wARROWotsuXHZ+ZOwnUL1lMJfP7XdNGjRRVYeEfyJJW45nyR8V/jg6LXNfUQVVQVSM2oKxFHM5huNaU4zcXWs0vnLi/XevDfwkJBkjmLEe3McSK4gKotsuWLYiZ+xTfSb6gBOX29msxHVtamigWBHMMYFPL+CTSdf+lI6/R6grMSJGjFqAmne6p1GNnWqubKMPlPP5p/Yt+U8rAj/0viVL7FicRx0Bqcp58tw/O3FWYeo9/bawaI+rovhYRGxHp0oW4lGGP0r8Q4d/MLUzDrWUXoOCd8ZINJAvUI2bq3fVdi89/YEHdo6lkkZ0QAr/d/M/ubA/Kt+TN9Gcva4SixEbxpN2pp6E37pOVZaCKt5NzReihroNQ83G0jfdd8+a0TqhQwXp8uVGVt3kNp//qUv6ovJqa8ycva4SGyPRJPzxwQ9/qhiRaE+zHluROQP53Oo9f/wnl8iqVU6XL+9gnqlmmHC3nLvshHzBrCmY3Mz9rhYbI1FHRTKFT8JnBPzuNikaD+RyUc25l2OrCwe/971dSFuHZ3rjJgOCycu9ZVuYhN8D+CJgRKJ9cSMu56OZ4vy9iMCSJS3uBhK9zyq35cL/dscJUemqvXFlEn4P4KfXRiQaatTjgWLhqr3ve98dsmqV08QyEl2uhpWiWy747Nyi4dkYZz1eRMI4mYR/ZPDT+IqqETQyxonzFxTuuWc9y5eLeeKJFSboo/j2ss3lPN4H+Mok/N7AT9cOXtUXczZXM+52AX3iiSeMALxx/rJzJTLPxOoiFZL1A+0MJuG3rg8HfqatakCtNXFD3UWD3/3BiwYgtnxowBbyHvVIO/tJ+J3XRwgfQBzqC/koD3wIQLYsuK1MPO35ksmdWafpSS2jSfi9hp/G8fnImnocb95X3D/PODdlYV7s6XWayiT89v2JgQ+CaTinuUhOH6iWFhqLeWfJ5qyq+mzhk/CZCPhJLuqLUWStte80Apc4HITJdxL+BMNPrEtR9TjRSyLg7BifdMAoFZqEP7KtRwA/4SROPYKeHRkjsxsac8z8+YcCvwMWiEhXfu34xzF8BKTuPcbI7EiD9B93kt8R37QqGJ47h3jfGd+a8D+VJE23ZI8v+Nn4ihIdj/BFCPaYseBitFqDZpwABjNQQsrldmONopUqWqkgqqh3kI+QYh6sDWV7d1zBT/OJ2g8PkOnRhG8NqEcrNYhjZLBMdMEccufOxM45E3PiFMxJ0zAnTCEb/O69+H/bje7ajXtpM/H6TbhNr6B7hyBnkXIxqCx17XodY/gIyPZLPqUHzPRowTcGQdHhCkSW3IVzyL/tInJvuRD7e6dyOMG9upV4zTM0nvwN7rl14GOkrxSGWDIijhX8dH4LHXCs4VsDlSoAuUvnU7p5MbkF53XRzOp0oaXb263PPCPkmQnx02up3/9Tmr95JtSlrwTeHzvJT+ej7Qs/pccMvhXwHt0/TP7icyh98AZyC+YlSRR8Jq6STMatTEcPB0kXP72W2g9+SPzs85j+Mpig8uiCOdGS38pn+8K/1KMPXyEyaLWORIa+j91I8T1XBKn1mqSXcN0lyVqposNV3NYdiEmeeY+ZcQpSLiHlUkd8vA95aTI6TOj0+k8eof7d/4O6GCkVg0o6qvDDZ3Rs4Ft0f4XozOn03/5BonmzEslNYHkCqGSExC9uovnPvyVe/zJu63ao1dG9+4KlJIAqZko/lIrYGSdj58wi/9YF2LmzgoRD6EzT7pDCuxcTzZ1N9atfx23ZgvT1hTniKEl+ewT8wV/qUYe/dz+5N89h8K//HOkvg3PBXPQawAO6Z4jaPz5O4xdrcL/bBvU6RAbJ5xAjkLOd5TkH6tBmE3EOKeYxZ5xG7u2XUrjmSmTKYFKtZHQlZerwMJW/+hLx8y9gpgyCi48C/MxcsOPST45qBU0o/IvmMPjlv0D6S2Fytab1qZUatR+upv6Tn+O3vw6FPFLMtTpG1DPa4qpl0Yi0JF0bDWjUMdNPJr/4CgrXvyuoqLRM78EYdLhC5X98EffC88jgQOicCYefPN9x6SdHWEETNeHqcJXc+bMZ/HIi+QmA9DN+fiPDX/427qXNoXPyuTBB6mir9ZHlS/d9Q8i/2YThYezsMyl9/KPYc+aMKFuHK1Q+/wXcunVIX7ltpk4I/DYn2fGWT+qEwzeC1uvY009m6v++vQ0/nRyNoXb/z6h+474wKfYVE7PTt8o5ZPgZaGIIo6taRSJL8f1LyV+7eEQddHiY4WW347dvQ4pFUD+h8AHMxNv5hIZYw8DnPpzo/ET6koYP/83dDP/P74A1SKkAsSOrZg4bvqT11eA/KhbAGqp/+w1qf//tjjrgPdLXR+nPP45Ym8Bvs+89fAVRzMTCD2ak7h+m77/eTHTOWcnkZ1qdMPzVu6mtehhz0pSMlTIW3FHgi4wNv7sdGiReTphK48F/pPatpBOca33a2bMpvv/9MLy/bQJPgOSnz82EwjcGKhXyF59D8frLRky4tQf/idq9P8WcOJhYMcohwUcZt2+nFTziHTJtKo0HHqC5+pFggbUsMU/une/Enn8+Wq0EU7jn8Nv3zVgmVy8ca6HhSumjN4bOEFqLq3jdy1T/7geYEwbbboZDga8anGyFPOlwHhN+FmB67R0yZSq179yF27ixBR8AYygsXUpHx/USfktYNBh3oyY+UvjWwHCF/FsuIHfBnPaER7CGhr/0LdS5xLw8RMm3Ft2/j8KiKyi874/QfUOJ23mc8NN5wQjqY6pf+19opZI2GLzHnnMe0cW/j1aGwUpv4achjIDewxcBwUNkKC69pl1gstCqP/gYbsMrSH/x0HU+hBXrQD/5664if/UfYqafAs1GsHbGBT+Jpw4pl/Evb6K5+uG2WZqE/A3vRSIzAfDbbRlhBfUCPkbQSo3cm88hd+HcxDkmwdQb2k/twceQgWRBdKjwo2Au5q98O+bkNyGFPIV3L4JKpe12GA/8NI53mL4yzUceRof2JqpSQD323HnY8+aHuaC1K3eE8CUzf3VbQT2Bnwxtmk3yb3tzksy3PJT1h57Ab3sD8nmCnX8I8IVgTvb3UXjvtUneSn7xlZjpJ0OzEeKMFz7JSM3n8Tu2E//yn1sqKDgFIVqwEOIGrYyOFD6ZtpCxgnoGXwRcjEztJ/eWC5M4JkhWHFN/4smwVaiHsciyifT/4dswp01PQPmgjq69OrFa2qbj+B1rCpHBrXsxfdAaTfbiS5CBQfDxKG09DPiiHW01vYVPUGq1OtGcM7EzTg6mZfLMbXwVt3krFHOH515wDhkoB+lP2SWLqfyiq9qjwHAI8AmLrnwe9/JGtF5vqzJVzCnTMTNnoY1a2LU7Uvh03jM9hQ9B/cQx0Xkz28NZQ9zG/30qeDUTk/SQ4OcitDpM/vK3B+lX39bX6Si4ZlFwNyQW0bjgpxZRLkJ37kC3b23BTy03O/tsiJthku8h/GAF9RI+GipuDXbumZkCg5TG6zZCFNzIhwTfGqhXIZ9LpD/TGGiPgquvwpx4AnSoos46junbMQbqdfxrryZNacczZ53dPl3RQ/iIYnp/Yk3BgD1papogWEW1Om7b60jeItktwHHA13oNKZfp+/RfBOlPgbUaJaCKDPRT+i8fhf4+tF5LOmEc8FvzheJeXJsBFCLItGmt5cpodT5c+JA9Dd0T+ASzrr+MmTpINuj+Sjjf0wHuIPCNQLOBGeij778vI/fWSzILuq6Q2PDRJQso3/FZpL8vmQ9kdBBZ+BBUWi7Cb3k1SL+0JxIZnBrOIakD0xv4af+OXIgdCXwBcR7pKyFvmtZ+DvgtO2DvPiSXSuVB4EsCxRr6ln8aO/us4CXNdmB3MAZih501k/JnlrVU03hdypLLo1tfw+/e2dHJcsKJUO5L9o3liOFn2216Bj9Nm4KLu76txbZmnEy+7TxGwE9NzivegZ0zK8CPxvzKhXaILMQxdvbZ5C6/LPFqZiblMeCnpqju34vu2B7ipKti5yA5wplO2kcq+Wm7TU/hp5I9iobIVqKdzxjwE1UmfWUK178rqAQzVqajhHRSvvbazO7WAeBnszYycpR1FX0k8LvLbLujjxh+pqJGIOpqRLoeOCh8DQU2GtgzZ2BOPSXJ8wCqpzskcc0p0zFnnAGNjG0/Fvy03artIyqt/GzLadhL+K2FmGQTHTb8jNUyPIx/Y3dnG047BRnoa/t/xoIPycZMjJk2NaiPbrNzPEEVrEWmTg2HdQ8CorWCHxjEnHJqu06A7t6JVveHc6vdo/wI4EN2YPcCPj5svleq6J6hDh4y2I+ZMjD+U8opxMNg3wqtUcdBQYgoog4plcKEmw1De5DW2qJ38BFG+oIOG37rb0HU43fuat93Dsnnyb39ErRWDSfaDgRfFclF+B070LhJauePOyRnfzSO0R3bkZxFunbbRrRVBHUx5uTpSCFsyLfkYM8uUtdJL+ELXb6gI4Of6PRkAnUvbW4lTRPkr3wHZqA/OLYyFc1WqJVXIY/buhW3fmMb6nhDEtdvXI/fvgXJJ7tmY8FPPbguxsw+O9z07fL85g2oulY7egUf6HJHc4Tw0/i5XHA7pCcOTDjzac84DTt3JlpLVqmjws+U6RyN+x847BHQ+PH94aRbx67bGG31wSFnFvwHWg8Ta8q/vB6JEvd5D+F3qqDuCmVBjBe+JOqjlMdtfAW/7fU2vMT9nL/yHZmTZ5kKdZfpPdJfJv7Nb2n+0+NhMo7jA3eEagBuLc0nHsM9/ZvkzKc7MHwjaLOGmfF72DNmZtot6Ovb0N9thELbhd4r+C0rqGfwgTARW3TfPpr/8tvkVnoOCHJvWYCZ/qZk80RGh5/kJ+qRYoHq1/4udEIU0d4wGeW/CNiI5hOPUf/G18K+Q7qAGgt+qn4adeyl7whlZDZk3LNr8MN7W4vAXsKHA/iCDgt+q3IKuYjGr55K7ne6jXNvXYjWaohtFTgSfnptQEpFql//OrW77kL37m2rta7/OrSX+ve/Tf3v/zYc8Mr6jMYStGT3zpw8nejyxckz07IP3dO/RKJcJ4cewUcg6pnkZ597h/QVcWtfJH7uRaL552Y234Maajz8aMay6JSqjjKTSVyKBRo/fpD4yV8RXXQRdt48zEknAeB3/hvuhbW4f30afWMH0t9Pa9I9EHxRsBG6bw+5G25G+gfa/h5j8OvX4tc/C6UynYeCewMflKjn8FvPg1lXX/Xj0AHQ8lja2TOJzj2b+LkXknOi7XxGLzPRvQMDMLSH5qOraT72SOutSbwD9ZhiMcQ5mM5P7xuDVoexZ80muvK6RCBMa55pPrwK9T6Zw3sPP+MN7TV8QB3SX6b562eIn1/XeeRDhOIHbkHyubbuHhN+u2GiDqIIGRxA+vuQUgkpFZH+PszgIOSi8cNPTj6INeQ//AmkVE4GTegY/9Jz+GfXYFI3dDfAHsCH7oVYr+C37ocbtbt+0AEf77Fzz6b4oVuDTrdycPjp/dRXkx5bVx9e2k7vjQc+BJfJvt3k/+NtmJlzko5rv/LU/NF3MkySPHoMv8MK6j18WnNBvPZ5Gg//rOM8Ps6Rf9fVFP7oetizJ5iZrbLHgJ/mn6njgUCMKfmRhb27yF9zI9EV1wT4xiafhvgXP8WveyaMCu+ZCMkf1QrqKfwUlFdMf5nand/HvbSpfQYz+Sx+5IPkb7gO3Z24Lg5lG/FQ4Zsk7z07iRa/l9zSjyYCkcC3Fv/KBpr3fRPp66fj7ckJgE97DpgA+K0KJW+geEf1K18LL2KnIyFRR8WPfIjin34MfIzWqi17v2dvIxrARmFj38fkP/hx8rd8rKMOGItWhmne+deIT3feMoeGJwA+JDtiHZspPYWfVFQ9Uiritm6h8ldfbHdC5uWI/DWLKa9cgTntNHTPbiRZ0YYjgYcJP1U3LkaHdiHTZ1D89BeJrnx3ZnGYWEOVYRpf/Ry64zUolug+9j4R8BGQXdf8Zx0f3MOEn41jLbpviGj+eZQ/uyzZrep6V6tapfmTh2g+9ij+9R3h+Hkh394QGbGxk+Qv0t4STSwcmjW00cCcfArRZYuIFt2AFMtdOt+i1WEaf/M5dMNaSE/BHQX4ALLrmtvaOzITAb97hRtZdGgIO/88yp9ZFnw16csR6SukgA7tDfb+k79Et76GNmqIjZB8lOy4RUn8JI2PEe+D+9rFSDGPnHoG0R+8jejyxcjg1KQ6Sfz0NdXKfhpfXY5ueBYGp4BrHj34osiua28bMQImDH56nZxwtqfPoPhnf4qdO5fkRyloOe8yb8G7jRtwT/0LftNL+B1bw/HBfUOpCQF4ZGAQKRaRU07FzDqb6OJLMbPmZvJJzMy0DBH8phdp3vUVdPuryamHoyj5qcrcdW06AiZY8kdTR7UKEkUU/uQW8osWt3XyaB2R5lqtQLWK37GVlt2uPmwjlsrBdMyG7JuQQkjjPfHjDxH/6M4AvVg6JvDDHHDdR7Sd6VGCn+aZvixd2Y+dP5/CkpuxFyQnqlsubMnkmT11O0Y4SDr/wtM0f3w3ft2/BvVnzFGbcKETPmjSAWNNmhMJv1UhwuRbqwBK9OaLyV93Pfb8CzvBpicVlLZEZ4Okz5K/TecZIv/C0zQf+Qfcc08haOJ66HwX+WjDDyPg3R/Roy753RWCcHAL0MowEhnsufOIFizEXvT7mBmnczhBt72Ke/bXuGd+hd/wHOpd8O0IE77CHQ98gOjYSX4GvmhLoqW/jGg4JOvW/hbpH8CcdRZ21hzMWbOQqdOQaSciU6eF/JIRoXt3w56d6J5d+M0v4V/ZgH91Ezo8hOQiKJYwIkHd6Mg2HQv4iCK7r//wCCvoqMPPpk3jG2ltlNOoo3EznMsRkHLwhGbz11oFqsPJHOCQXC6sH5Jj5S1/flqX4wE+kPmVjOMIPsmISPZGKJUwJtHZAniH7t/bmdYYSNVLuhAjeElbq2Myn8cBfCTZEdOsZBwP8LvyEfXgkvvpRBtF7ecC2Y3/9hv3o5SZadOxhR9e0jZe/ca8tSiqxyX8sQAloyQ9yNWZ5xhlZtp0LOErqiYSnOpGg+GlXLLn9v8N/NFAjEh7fMJP7qtYg8JLRoRfW5N8dfok/ImHH+qrGMEa/bVR1UercezEaHtzZhL+xMEP7TO+Gbt6rI+aapxbE2v8WsFaQfCT8A9S5oHaOg74iHqbM+K9vrbb9K8xMx76ZgWRVcVcDk13zifhTxB8UPAULAirZqx8qGIADP7OSlxvWBED6CT8Uco8UFvHA5/E+jEYX48bkXV3ApjHL7ssGvyH777YcO7egXzehK+TaieZhN8b+Mm1M8XIELt75TM/f1GXXxaZyy+/3CuIMfYLVddsWsRo6mSZhH/gth4CfAUVg/EN12yKfEFBWHG5N7JypWfJEjNl1bfX1Zz7fH+xYJTMKJiEP3pbx6nz23VXZ0uRUec+X7zj8XXct8SIrPRtZbNkiWXVKj90862PDObzV+2p12Nj0sO746jQKKD+3cNP4qhqHJWjyFXjn0V3PH613rfEyE3hl7U7tb0qQ++99QRbMmuK1s7cHzdiIxJNwj88tdOCX7SRj/3LRmQhy362CwRJKtPacBVQVqyQKQ98f2e14W+K1e8eyOUir8lm6ST8w4evuts13E1y+2M7WbFCpFWZzAhIQ/rD82/ctHThlEJ0T87aOXsb9VgEK+mXB07CPyB8DUaMi8pR5J3f4OrNpfnlv1ij9y2xqeppRWeUkHbCa+95z4kn9A/eU8pHi/Y36njV2BhsK90k/I60Grb1nAiRLUf4Rrx6/9C+pVO+tGbnaPBbWY8W0k4AGF66dEUUmWX5yOaHGw08GpMZEf/e4SeufGcgMuUImnHDO/2i/dzjK7pZdocxO6BVrCoiovtuueX8nNVPeLilVMjlmnFM3TlU1ImGn4GW5OcQRwVxKPCT+NIRfyTMA3XsRPvzSTYjRMTanEDB4mtx04jeDe4r8pmfr9W0rzI6vzscsANaODI9uO/WP54fRfZW8dzo8LPK+QhVT6yeRtev2404pXygkZFeZwGOBuo4kHwbSdivtuAaDhHdZKz5YSN23yvc8fhzAGOpnO4wrg4A0OXLDc8/L2lH6G23lZt+eIF6XRRrvNAYc6ZH5yrJz6EfiuR3Nfh4lfwkT0VkvahuJscag66mUX5KVj5UgQCe5+aprFzZ9YVJo4f/B02T+Tyurze5AAAAAElFTkSuQmCC">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Ciclo">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root{
+    --bg:#fff4f8; --surface:#ffffff; --surface-2:#fdeaf1; --ink:#2c2333; --muted:#8a7d92;
+    --line:#f8d9e6; --accent:#e5287e; --accent-soft:#ffdcec; --ok:#0fae9e; --ok-soft:#d2f5f0;
+    --warn:#f5880f; --warn-soft:#ffe6c7; --sup:#7a53ff; --sup-soft:#e9e2ff; --radius:16px;
+    --grad:linear-gradient(100deg,#e5287e 0%,#ff5c9d 45%,#ff8a3d 100%);
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  :root:not([data-theme="light"]) { }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#17141c; --surface:#221d2b; --surface-2:#2c2537; --ink:#f3ecf6; --muted:#aa9cba;
+      --line:#3a3047; --accent:#ff5fa2; --accent-soft:#3c1f30; --ok:#34d6c4; --ok-soft:#163331;
+      --warn:#ffa640; --warn-soft:#3a2c17; --sup:#a98cff; --sup-soft:#2a2442;
+      --grad:linear-gradient(100deg,#ff5fa2 0%,#c06bff 50%,#ffa640 100%);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17141c; --surface:#221d2b; --surface-2:#2c2537; --ink:#f3ecf6; --muted:#aa9cba;
+    --line:#3a3047; --accent:#ff5fa2; --accent-soft:#3c1f30; --ok:#34d6c4; --ok-soft:#163331;
+    --warn:#ffa640; --warn-soft:#3a2c17; --sup:#a98cff; --sup-soft:#2a2442;
+    --grad:linear-gradient(100deg,#ff5fa2 0%,#c06bff 50%,#ffa640 100%);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;
+    -webkit-font-smoothing:antialiased;padding:0 16px 48px}
+  .wrap{max-width:720px;margin:0 auto}
+  header{padding:24px 0 12px}
+  h1{font-size:1.5rem;margin:0 0 2px;font-weight:750;letter-spacing:-.02em;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);font-size:.85rem}
+  .tabs{display:flex;gap:6px;margin:16px 0 18px;background:var(--surface-2);padding:4px;border-radius:12px;width:fit-content}
+  .tab{appearance:none;border:0;background:transparent;color:var(--muted);font:inherit;font-weight:600;
+    padding:8px 18px;border-radius:9px;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--grad);color:#fff;box-shadow:0 2px 8px color-mix(in srgb,var(--accent) 40%,transparent)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:16px}
+  .card h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 12px;font-weight:650}
+  .dates{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+  .daterow{display:flex;align-items:center;gap:10px}
+  .daterow .idx{color:var(--muted);font-size:.8rem;width:18px;text-align:right}
+  input[type=date]{font:inherit;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:9px;padding:8px 10px;flex:1;min-width:0}
+  .cyc{color:var(--muted);font-size:.8rem;white-space:nowrap}
+  .x{appearance:none;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:1.1rem;padding:4px 6px;line-height:1}
+  .x:hover{color:var(--accent)}
+  button.add{appearance:none;border:1px dashed var(--line);background:transparent;color:var(--accent);
+    font:inherit;font-weight:600;padding:9px 14px;border-radius:9px;cursor:pointer}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  button.ghost{appearance:none;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);
+    font:inherit;font-weight:600;padding:9px 14px;border-radius:9px;cursor:pointer}
+  button.ghost:hover{border-color:var(--accent);color:var(--accent)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
+  .stat{background:var(--accent-soft);border-radius:12px;padding:12px;border:1px solid color-mix(in srgb,var(--accent) 18%,transparent)}
+  .stat:nth-child(2){background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 20%,transparent)}
+  .stat:nth-child(3){background:var(--sup-soft);border-color:color-mix(in srgb,var(--sup) 20%,transparent)}
+  .stat:nth-child(4){background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 22%,transparent)}
+  .stat .k{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+  .stat .v{font-size:1.25rem;font-weight:720;margin-top:3px;color:var(--ink)}
+  .pred{font-size:1.05rem}
+  .pred .big{font-size:1.55rem;font-weight:780;letter-spacing:-.015em;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .range{color:var(--muted);font-size:.85rem;margin-top:4px}
+  .banner{border-radius:10px;padding:12px 14px;font-size:.88rem;margin-top:4px}
+  .banner.sup{background:var(--sup-soft);color:var(--ink);border:1px solid color-mix(in srgb,var(--sup) 35%,transparent)}
+  .banner.warn{background:var(--warn-soft);color:var(--ink);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent)}
+  .banner b{font-weight:680}
+  .sup-ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.88rem}
+  .sup-ctrl label{color:var(--muted)}
+  .pill{display:inline-block;font-size:.72rem;font-weight:650;padding:3px 9px;border-radius:20px;background:var(--sup-soft);color:var(--sup)}
+  .note{color:var(--muted);font-size:.8rem;margin-top:10px}
+  .foot{color:var(--muted);font-size:.74rem;text-align:center;margin-top:8px;line-height:1.6}
+  .themebtn{position:fixed;top:12px;right:12px;appearance:none;border:1px solid var(--line);background:var(--surface);
+    color:var(--muted);border-radius:8px;padding:6px 9px;cursor:pointer;font-size:.8rem}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<button class="themebtn" id="themebtn" title="Tema">◐</button>
+<div class="wrap">
+  <header>
+    <h1>Calculadora de ciclo menstrual</h1>
+    <div class="sub">Registro local, en este navegador. Nada se envía a ningún servidor.</div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-p="cata" aria-selected="true">Catalina</button>
+    <button class="tab" role="tab" data-p="juani" aria-selected="false">Juanita</button>
+  </div>
+
+  <div id="panel"></div>
+
+  <div class="foot">
+    Método: la próxima menstruación se estima con el intervalo medio observado; la ovulación se estima
+    restando ~14 días (fase lútea) a la próxima regla esperada, no contando hacia adelante.
+    Estimación poblacional, no diagnóstico. Caracterizar un ciclo requiere ≥6 registros.
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var LUTEAL = 14;            // días de fase lútea para estimar ovulación hacia atrás
+  var FERTILE_BEFORE = 5;     // ventana fértil: ovulación -5
+  var FERTILE_AFTER = 1;      //                 ... +1
+  var IRREG_RANGE = 9;        // rango (max-min) que marca irregularidad
+
+  var DEFAULTS = {
+    cata: { dates:[], supActive:false, supStart:"" },
+    juani:{ dates:[], supActive:false, supStart:"", breakthrough:[] }
+  };
+  var GAP_MIN = 10;   // intervalos fuera de este rango se tratan como artefacto
+  var GAP_MAX = 60;   // (hueco de registro, doble carga), no como ciclo
+
+  function load(p){
+    try{
+      var raw = localStorage.getItem("ciclo_"+p);
+      if(raw) return JSON.parse(raw);
+    }catch(e){}
+    return JSON.parse(JSON.stringify(DEFAULTS[p]));
+  }
+  function save(p,data){
+    try{ localStorage.setItem("ciclo_"+p, JSON.stringify(data)); }catch(e){}
+  }
+
+  var MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  var DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+  function parse(s){ if(!s) return null; var a=s.split("-"); return new Date(+a[0],+a[1]-1,+a[2]); }
+  function fmt(d){ if(!d) return "—"; return DIAS[d.getDay()]+" "+d.getDate()+" de "+MESES[d.getMonth()]+" de "+d.getFullYear(); }
+  function fmtShort(d){ return d.getDate()+" "+MESES[d.getMonth()].slice(0,3); }
+  function addDays(d,n){ var r=new Date(d); r.setDate(r.getDate()+n); return r; }
+  function diffDays(a,b){ return Math.round((b-a)/86400000); }
+
+  var state="cata";
+  var panel=document.getElementById("panel");
+
+  function cycles(dates){
+    var clean=dates.filter(Boolean).map(parse).filter(Boolean).sort(function(a,b){return a-b;});
+    var cs=[], valid=[], excluded=0;
+    for(var i=1;i<clean.length;i++){
+      var d=diffDays(clean[i-1],clean[i]);
+      cs.push(d);
+      if(d>=GAP_MIN && d<=GAP_MAX) valid.push(d); else excluded++;
+    }
+    return {clean:clean, cs:cs, valid:valid, excluded:excluded};
+  }
+  function mean(a){ return a.reduce(function(x,y){return x+y;},0)/a.length; }
+  function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+
+  function toCSV(p,data){
+    var rows=[["perfil","tipo","fecha","ciclo_dias"]];
+    var c=cycles(data.dates), prev=null;
+    c.clean.forEach(function(d){
+      var cyc = prev? diffDays(prev,d): "";
+      rows.push([p,"inicio",iso(d),cyc]); prev=d;
+    });
+    (data.breakthrough||[]).slice().filter(Boolean).sort().forEach(function(ds){
+      rows.push([p,"disrupcion",ds,""]);
+    });
+    return rows.map(function(r){return r.join(",");}).join("\n");
+  }
+  async function downloadCSV(p,data){
+    var csv=toCSV(p,data), fname="ciclo_"+p+"_"+iso(new Date())+".csv";
+    // En el enlace/celular (visor de artifacts) la descarga directa no funciona:
+    // se usa la capacidad 'downloads' del visor si está disponible.
+    try{
+      if(window.claude && claude.use){
+        var dl=await claude.use("downloads");
+        if(dl){ await dl.save({filename:fname, data:csv}); return; }
+      }
+    }catch(e){ if(e && e.code==="declined") return; /* si falla, cae al método local */ }
+    // Archivo local (file://): descarga por enlace, funciona sin conexión.
+    var blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+    var url=URL.createObjectURL(blob), a=document.createElement("a");
+    a.href=url; a.download=fname;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(url);},1000);
+  }
+  function importCSV(p,data,text){
+    var lines=text.split(/\r?\n/).filter(function(l){return l.trim();}), added=0;
+    lines.forEach(function(l){
+      if(/perfil/i.test(l) && /fecha/i.test(l)) return; // cabecera
+      var cols=l.split(/[,;\t]/).map(function(s){return s.trim();});
+      var fecha="", tipo="inicio";
+      cols.forEach(function(x){ if(/^\d{4}-\d{2}-\d{2}$/.test(x)) fecha=x; });
+      cols.forEach(function(x){ if(/disrupc/i.test(x)) tipo="disrupcion"; });
+      if(!fecha) return;
+      if(tipo==="disrupcion"){ data.breakthrough=data.breakthrough||[];
+        if(data.breakthrough.indexOf(fecha)===-1){ data.breakthrough.push(fecha); added++; } }
+      else if(data.dates.indexOf(fecha)===-1){ data.dates.push(fecha); added++; }
+    });
+    data.dates=data.dates.filter(Boolean);
+    save(p,data); render();
+    alert(added+" registro(s) importado(s).");
+  }
+
+  function render(){
+    var p=state, data=load(p);
+    var isJuani=(p==="juani");
+    var c=cycles(data.dates);
+    var html="";
+
+    // ---- Fechas ----
+    html+='<div class="card"><h2>Inicios de menstruación</h2><div class="dates" id="dates">';
+    var sorted=data.dates.slice().filter(Boolean).sort();
+    var prev=null;
+    if(sorted.length===0){ html+='<div class="note">Sin registros aún. Agrega la fecha de inicio de cada regla.</div>'; }
+    sorted.forEach(function(ds,i){
+      var d=parse(ds), cyc="";
+      if(prev){ cyc=diffDays(prev,d)+" d"; }
+      prev=d;
+      html+='<div class="daterow"><span class="idx">'+(i+1)+'</span>'+
+            '<input type="date" value="'+ds+'" data-old="'+ds+'">'+
+            '<span class="cyc">'+cyc+'</span>'+
+            '<button class="x" data-del="'+ds+'" title="Quitar">×</button></div>';
+    });
+    html+='</div><div class="toolbar">'+
+      '<button class="add" id="add">+ Agregar fecha</button>'+
+      '<button class="ghost" id="expcsv">⬇ Exportar CSV</button>'+
+      '<button class="ghost" id="impcsv">⬆ Importar CSV</button>'+
+      '<input type="file" id="csvfile" accept=".csv,text/csv" hidden></div></div>';
+
+    // ---- Estadísticas ----
+    if(c.valid.length>0){
+      var m=mean(c.valid), mn=Math.min.apply(null,c.valid), mx=Math.max.apply(null,c.valid), rng=mx-mn;
+      var sd=Math.sqrt(c.valid.reduce(function(s,x){return s+(x-m)*(x-m);},0)/c.valid.length);
+      html+='<div class="card"><h2>Ciclo observado</h2><div class="stats">'+
+        stat("Promedio",Math.round(m)+" d")+
+        stat("Desv. est.","±"+sd.toFixed(1)+" d")+
+        stat("Rango",mn+"–"+mx+" d")+
+        stat("N° ciclos",c.valid.length)+
+      '</div>';
+      if(c.excluded>0){
+        html+='<div class="note">Se excluyeron '+c.excluded+' intervalo(s) fuera de rango fisiológico '+
+          '('+GAP_MIN+'–'+GAP_MAX+' d) por considerarse artefacto de registro, no ciclo.</div>';
+      }
+      if(rng>IRREG_RANGE){
+        html+='<div class="banner warn"><b>Variabilidad alta</b> — rango de '+rng+' días entre ciclos. '+
+          'El promedio pierde valor predictivo; trátalo como ventana, no como fecha.</div>';
+      }
+      if(c.valid.length<6){
+        html+='<div class="note">Con '+c.valid.length+' ciclo(s) la caracterización es provisional. '+
+          'Se recomienda ≥6 registros para un rango confiable.</div>';
+      }
+      html+='</div>';
+    }
+
+    // ---- Predicción / supresión ----
+    html+='<div class="card"><h2>Próxima menstruación</h2>';
+    if(isJuani){
+      html+='<div class="sup-ctrl"><input type="checkbox" id="supchk" '+(data.supActive?"checked":"")+'>'+
+            '<label for="supchk">Bajo progestágeno (supresión)</label>'+
+            '<input type="date" id="supstart" value="'+(data.supStart||"")+'" '+(data.supActive?"":"disabled")+'>'+
+            (data.supActive?'<span class="pill">ciclo suspendido</span>':'')+'</div>';
+    }
+
+    if(isJuani && data.supActive){
+      html+='<div class="banner sup"><b>Predicción suspendida.</b> Con progestágeno continuo desde '+
+        (data.supStart?fmt(parse(data.supStart)):"—")+', no se proyecta fecha por conteo de ciclos: '+
+        'lo esperable es amenorrea o sangrado por disrupción (breakthrough), que no sigue el intervalo previo. '+
+        'Registra abajo cualquier sangrado real en vez de predecirlo.</div>';
+      // breakthrough log
+      html+='<div style="margin-top:14px"><h2 style="margin-bottom:10px">Sangrado por disrupción</h2><div class="dates" id="btdates">';
+      var bt=(data.breakthrough||[]).slice().filter(Boolean).sort();
+      if(bt.length===0) html+='<div class="note">Ninguno registrado.</div>';
+      bt.forEach(function(ds){
+        html+='<div class="daterow"><span class="idx">•</span>'+
+          '<input type="date" value="'+ds+'" data-btold="'+ds+'">'+
+          '<button class="x" data-btdel="'+ds+'" title="Quitar">×</button></div>';
+      });
+      html+='</div><button class="add" id="btadd">+ Registrar sangrado</button></div>';
+    } else if(c.valid.length>=1){
+      var m2=mean(c.valid);
+      var last=c.clean[c.clean.length-1];
+      var mn2=Math.min.apply(null,c.valid), mx2=Math.max.apply(null,c.valid);
+      var next=addDays(last,Math.round(m2));
+      var nEarly=addDays(last,mn2), nLate=addDays(last,mx2);
+      html+='<div class="pred">Estimada: <div class="big">'+fmt(next)+'</div></div>';
+      html+='<div class="range">Ventana según tus ciclos: '+fmtShort(nEarly)+' – '+fmtShort(nLate)+'</div>';
+      // ovulación hacia atrás
+      var ov=addDays(next,-LUTEAL);
+      var fStart=addDays(ov,-FERTILE_BEFORE), fEnd=addDays(ov,FERTILE_AFTER);
+      html+='<div class="stats" style="margin-top:14px">'+
+        stat("Ovulación aprox.",fmtShort(ov))+
+        stat("Ventana fértil",fmtShort(fStart)+"–"+fmtShort(fEnd))+
+      '</div>';
+      html+='<div class="note">Ovulación estimada restando '+LUTEAL+' d a la regla esperada (fase lútea). '+
+        'Válido solo si los ciclos son ovulatorios y regulares.</div>';
+    } else {
+      html+='<div class="note">Necesitas al menos 2 fechas para estimar un intervalo.</div>';
+    }
+    html+='</div>';
+
+    panel.innerHTML=html;
+    wire(p,data);
+  }
+
+  function stat(k,v){ return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div></div>'; }
+
+  function wire(p,data){
+    var add=document.getElementById("add");
+    if(add) add.onclick=function(){
+      var t=new Date(), ds=t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0");
+      if(data.dates.indexOf(ds)===-1){ data.dates.push(ds); save(p,data); render(); }
+    };
+    var exp=document.getElementById("expcsv");
+    if(exp) exp.onclick=function(){ downloadCSV(p,data); };
+    var imp=document.getElementById("impcsv"), csvfile=document.getElementById("csvfile");
+    if(imp && csvfile){
+      imp.onclick=function(){ csvfile.click(); };
+      csvfile.onchange=function(){
+        var f=csvfile.files[0]; if(!f) return;
+        var rd=new FileReader();
+        rd.onload=function(){ importCSV(p,data,String(rd.result)); };
+        rd.readAsText(f);
+      };
+    }
+    panel.querySelectorAll('input[data-old]').forEach(function(inp){
+      inp.onchange=function(){
+        var i=data.dates.indexOf(inp.getAttribute("data-old"));
+        if(i>-1){ data.dates[i]=inp.value; } else { data.dates.push(inp.value); }
+        data.dates=data.dates.filter(Boolean);
+        save(p,data); render();
+      };
+    });
+    panel.querySelectorAll('[data-del]').forEach(function(b){
+      b.onclick=function(){
+        var i=data.dates.indexOf(b.getAttribute("data-del"));
+        if(i>-1){ data.dates.splice(i,1); save(p,data); render(); }
+      };
+    });
+    var chk=document.getElementById("supchk");
+    if(chk) chk.onchange=function(){ data.supActive=chk.checked; save(p,data); render(); };
+    var ss=document.getElementById("supstart");
+    if(ss) ss.onchange=function(){ data.supStart=ss.value; save(p,data); render(); };
+    // breakthrough
+    var bta=document.getElementById("btadd");
+    if(bta) bta.onclick=function(){
+      data.breakthrough=data.breakthrough||[];
+      var t=new Date(), ds=t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0");
+      if(data.breakthrough.indexOf(ds)===-1){ data.breakthrough.push(ds); save(p,data); render(); }
+    };
+    panel.querySelectorAll('input[data-btold]').forEach(function(inp){
+      inp.onchange=function(){
+        var i=data.breakthrough.indexOf(inp.getAttribute("data-btold"));
+        if(i>-1) data.breakthrough[i]=inp.value; else data.breakthrough.push(inp.value);
+        data.breakthrough=data.breakthrough.filter(Boolean); save(p,data); render();
+      };
+    });
+    panel.querySelectorAll('[data-btdel]').forEach(function(b){
+      b.onclick=function(){
+        var i=data.breakthrough.indexOf(b.getAttribute("data-btdel"));
+        if(i>-1){ data.breakthrough.splice(i,1); save(p,data); render(); }
+      };
+    });
+  }
+
+  document.querySelectorAll(".tab").forEach(function(t){
+    t.onclick=function(){
+      document.querySelectorAll(".tab").forEach(function(x){x.setAttribute("aria-selected","false");});
+      t.setAttribute("aria-selected","true");
+      state=t.getAttribute("data-p"); render();
+    };
+  });
+
+  // tema
+  var tb=document.getElementById("themebtn");
+  tb.onclick=function(){
+    var cur=document.documentElement.getAttribute("data-theme");
+    var nx=cur==="dark"?"light":(cur==="light"?"":"dark");
+    if(nx) document.documentElement.setAttribute("data-theme",nx);
+    else document.documentElement.removeAttribute("data-theme");
+    try{ localStorage.setItem("ciclo_theme",nx||""); }catch(e){}
+  };
+  try{ var th=localStorage.getItem("ciclo_theme"); if(th) document.documentElement.setAttribute("data-theme",th); }catch(e){}
+
+  render();
+})();
+
+// Service worker: permite abrir la app sin conexión una vez instalada.
+if("serviceWorker" in navigator){
+  window.addEventListener("load",function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
