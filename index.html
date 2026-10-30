@@ -282,6 +282,36 @@
           '<button class="x" data-btdel="'+ds+'" title="Quitar">×</button></div>';
       });
       html+='</div><button class="add" id="btadd">+ Registrar sangrado</button></div>';
+      // ---- Estadísticas de supresión ----
+      if(data.supStart){
+        var hoy=new Date(); hoy.setHours(0,0,0,0);
+        var ini=parse(data.supStart);
+        var diasSup=diffDays(ini,hoy);
+        var btv=bt.map(parse).filter(function(d){return d>=ini;}).sort(function(a,b){return a-b;});
+        var n=btv.length;
+        var primer = n? diffDays(ini,btv[0]) : null;
+        var amenorrea = n? diffDays(btv[n-1],hoy) : diasSup;
+        var inter=null;
+        if(n>=2){ var s=0; for(var i=1;i<n;i++) s+=diffDays(btv[i-1],btv[i]); inter=Math.round(s/(n-1)); }
+        var pctSin = diasSup>0? Math.max(0,Math.round((diasSup-n)/diasSup*100)) : 100;
+        html+='<div class="card"><h2>Estadísticas de supresión</h2><div class="stats">'+
+          stat("Días en supresión",diasSup+" d")+
+          stat("Episodios de sangrado",n)+
+          stat("Días sin sangrar (actual)",amenorrea+" d")+
+          stat(n?"1er sangrado tras inicio":"Sin sangrado aún", n? primer+" d" : "—")+
+          (inter!==null? stat("Intervalo medio",inter+" d"):"")+
+          stat("% días sin sangrado","~"+pctSin+"%")+
+        '</div>';
+        if(n>=3){
+          var firstHalf=btv.slice(0,Math.floor(n/2)), secondHalf=btv.slice(Math.floor(n/2));
+          html+='<div class="note">Tendencia: lleva '+n+' episodios. En supresión continua lo esperable es que '+
+            'disminuyan con el tiempo (adaptación endometrial); si aumentan en frecuencia o duración, es señal para reevaluar el esquema.</div>';
+        } else {
+          html+='<div class="note">Cada registro cuenta como 1 día (no mide duración). '+
+            'Con más episodios la app mostrará la tendencia en el tiempo.</div>';
+        }
+        html+='</div>';
+      }
     } else if(c.valid.length>=1){
       var m2=mean(c.valid);
       var last=c.clean[c.clean.length-1];
