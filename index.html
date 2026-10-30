@@ -86,14 +86,36 @@
   .themebtn{position:fixed;top:12px;right:12px;appearance:none;border:1px solid var(--line);background:var(--surface);
     color:var(--muted);border-radius:8px;padding:6px 9px;cursor:pointer;font-size:.8rem}
   a{color:var(--accent)}
+  .authwrap{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50}
+  .authcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;max-width:360px;width:100%}
+  .authcard h2{margin:0 0 4px;font-size:1.2rem;color:var(--ink)}
+  .authcard p{color:var(--muted);font-size:.85rem;margin:0 0 16px;line-height:1.4}
+  .authcard input{width:100%;font:inherit;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin-bottom:10px}
+  .authcard button.primary{width:100%;background:var(--grad);color:#fff;font:inherit;font-weight:650;border:0;border-radius:10px;padding:11px;cursor:pointer;margin-bottom:8px}
+  .authcard .link{background:none;border:0;color:var(--accent);font:inherit;cursor:pointer;font-size:.85rem;padding:4px;display:block;margin:0 auto}
+  .authmsg{font-size:.82rem;margin-top:10px;min-height:1em;color:var(--muted)}
+  .logout{position:fixed;top:12px;left:12px;appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:8px;padding:6px 9px;cursor:pointer;font-size:.78rem}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 </head>
 <body>
+<div class="authwrap" id="authwrap" style="display:none">
+  <div class="authcard">
+    <h2>Tu ciclo</h2>
+    <p>Inicia sesión para ver tus datos y sincronizarlos entre tu celular y tu computador.</p>
+    <input type="email" id="authEmail" placeholder="Correo" autocomplete="username">
+    <input type="password" id="authPass" placeholder="Contraseña" autocomplete="current-password">
+    <button class="primary" id="authEnter">Entrar</button>
+    <button class="link" id="authSignup">Crear cuenta nueva</button>
+    <div class="authmsg" id="authMsg"></div>
+  </div>
+</div>
+<button class="logout" id="logoutbtn" style="display:none">Salir</button>
 <button class="themebtn" id="themebtn" title="Tema">◐</button>
 <div class="wrap">
   <header>
     <h1>Calculadora de ciclo menstrual</h1>
-    <div class="sub">Registro local, en este navegador. Nada se envía a ningún servidor.</div>
+    <div class="sub">Datos sincronizados en tu cuenta <span id="syncbadge"></span></div>
   </header>
 
   <div class="tabs" role="tablist">
@@ -125,15 +147,88 @@
   var GAP_MIN = 10;   // intervalos fuera de este rango se tratan como artefacto
   var GAP_MAX = 60;   // (hueco de registro, doble carga), no como ciclo
 
-  function load(p){
-    try{
-      var raw = localStorage.getItem("ciclo_"+p);
-      if(raw) return JSON.parse(raw);
-    }catch(e){}
-    return JSON.parse(JSON.stringify(DEFAULTS[p]));
+  // ---- Config Supabase (clave pública: segura en el navegador con RLS activo)
+  var SB_URL="https://dxmdtfhfemyubylflton.supabase.co";
+  var SB_KEY="sb_publishable_jVYx9jgjBQpPg4RqIKi4HQ";
+  var STORE={}, SB=null, UID=null;
+
+  function norm(p,d){ d=d||{}; return {
+    dates:(d.dates||[]).filter(Boolean),
+    supActive:!!d.supActive,
+    supStart:d.supStart||"",
+    breakthrough:(d.breakthrough||[]).filter(Boolean)
+  }; }
+  function loadLocal(p){
+    try{ var raw=localStorage.getItem("ciclo_"+p); if(raw) return norm(p,JSON.parse(raw)); }catch(e){}
+    return norm(p,DEFAULTS[p]);
   }
+  function load(p){ if(!STORE[p]) STORE[p]=loadLocal(p); return STORE[p]; }
   function save(p,data){
+    STORE[p]=data;
     try{ localStorage.setItem("ciclo_"+p, JSON.stringify(data)); }catch(e){}
+    if(SB && UID){
+      SB.from("perfiles").upsert({id:p, owner:UID, data:norm(p,data), updated_at:new Date().toISOString()})
+        .then(function(r){ if(r && r.error) setBadge("· error al guardar"); }, function(){});
+    }
+  }
+  function setBadge(t){ var b=document.getElementById("syncbadge"); if(b) b.textContent=t; }
+
+  async function pullRemote(){
+    if(!SB || !UID) return;
+    try{
+      var r=await SB.from("perfiles").select("id,data");
+      if(r && !r.error && r.data){
+        r.data.forEach(function(row){
+          STORE[row.id]=norm(row.id,row.data);
+          try{ localStorage.setItem("ciclo_"+row.id, JSON.stringify(STORE[row.id])); }catch(e){}
+        });
+        setBadge("· sincronizado");
+        render();
+      }
+    }catch(e){}
+  }
+
+  // ---- Autenticación
+  function showLogin(){ var w=document.getElementById("authwrap"); if(w) w.style.display="flex";
+    var l=document.getElementById("logoutbtn"); if(l) l.style.display="none"; }
+  function hideLogin(){ var w=document.getElementById("authwrap"); if(w) w.style.display="none";
+    var l=document.getElementById("logoutbtn"); if(l) l.style.display="block"; }
+  function applySession(session){
+    if(session && session.user){ UID=session.user.id; hideLogin(); setBadge("· sincronizando…"); pullRemote(); }
+    else { UID=null; showLogin(); }
+  }
+  async function initAuth(){
+    if(!window.supabase){ setBadge("· sin conexión (solo este equipo)"); return; } // offline / CDN bloqueado
+    try{
+      SB=window.supabase.createClient(SB_URL, SB_KEY);
+      SB.auth.onAuthStateChange(function(_e,s){ applySession(s); });
+      var res=await SB.auth.getSession();
+      applySession(res && res.data ? res.data.session : null);
+      wireAuthUI();
+    }catch(e){ setBadge("· sin conexión (solo este equipo)"); }
+  }
+  function wireAuthUI(){
+    var msg=document.getElementById("authMsg");
+    var em=document.getElementById("authEmail"), pw=document.getElementById("authPass");
+    var enter=document.getElementById("authEnter"), signup=document.getElementById("authSignup");
+    var logout=document.getElementById("logoutbtn");
+    function creds(){ return {email:(em.value||"").trim(), password:pw.value||""}; }
+    if(enter) enter.onclick=async function(){
+      var c=creds(); if(!c.email||!c.password){ msg.textContent="Escribe correo y contraseña."; return; }
+      msg.textContent="Entrando…";
+      var r=await SB.auth.signInWithPassword(c);
+      if(r.error) msg.textContent="No se pudo entrar: "+r.error.message;
+      else msg.textContent="";
+    };
+    if(signup) signup.onclick=async function(){
+      var c=creds(); if(!c.email||c.password.length<6){ msg.textContent="Usa un correo y una contraseña de 6+ caracteres."; return; }
+      msg.textContent="Creando cuenta…";
+      var r=await SB.auth.signUp(c);
+      if(r.error){ msg.textContent="No se pudo crear: "+r.error.message; }
+      else if(r.data && r.data.session){ msg.textContent=""; }
+      else { msg.textContent="Cuenta creada. Revisa tu correo y confirma, luego toca Entrar."; }
+    };
+    if(logout) logout.onclick=async function(){ await SB.auth.signOut(); STORE={}; };
   }
 
   var MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
@@ -418,6 +513,9 @@
   try{ var th=localStorage.getItem("ciclo_theme"); if(th) document.documentElement.setAttribute("data-theme",th); }catch(e){}
 
   render();
+  initAuth();
+  window.addEventListener("focus", pullRemote);
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) pullRemote(); });
 })();
 
 // Service worker: permite abrir la app sin conexión una vez instalada.
