@@ -52,6 +52,7 @@
   .dates{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
   .daterow{display:flex;align-items:center;gap:10px}
   .daterow .idx{color:var(--muted);font-size:.8rem;width:18px;text-align:right}
+  .daterow .dur{width:62px;flex:none;font:inherit;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:7px 8px;text-align:center}
   input[type=date]{font:inherit;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);
     border-radius:9px;padding:8px 10px;flex:1;min-width:0}
   .cyc{color:var(--muted);font-size:.8rem;white-space:nowrap}
@@ -119,8 +120,8 @@
   var IRREG_RANGE = 9;        // rango (max-min) que marca irregularidad
 
   var DEFAULTS = {
-    cata: { dates:[], supActive:false, supStart:"" },
-    juani:{ dates:[], supActive:false, supStart:"", breakthrough:[] }
+    cata: { dates:[], durations:{}, supActive:false, supStart:"" },
+    juani:{ dates:[], durations:{}, supActive:false, supStart:"", breakthrough:[] }
   };
   var GAP_MIN = 10;   // intervalos fuera de este rango se tratan como artefacto
   var GAP_MAX = 60;   // (hueco de registro, doble carga), no como ciclo
@@ -161,14 +162,15 @@
   function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 
   function toCSV(p,data){
-    var rows=[["perfil","tipo","fecha","ciclo_dias"]];
-    var c=cycles(data.dates), prev=null;
+    var rows=[["perfil","tipo","fecha","ciclo_dias","duracion_dias"]];
+    var c=cycles(data.dates), prev=null, dur=data.durations||{};
     c.clean.forEach(function(d){
       var cyc = prev? diffDays(prev,d): "";
-      rows.push([p,"inicio",iso(d),cyc]); prev=d;
+      var ds=iso(d);
+      rows.push([p,"inicio",ds,cyc,(dur[ds]!=null?dur[ds]:"")]); prev=d;
     });
     (data.breakthrough||[]).slice().filter(Boolean).sort().forEach(function(ds){
-      rows.push([p,"disrupcion",ds,""]);
+      rows.push([p,"disrupcion",ds,"",""]);
     });
     return rows.map(function(r){return r.join(",");}).join("\n");
   }
@@ -194,13 +196,18 @@
     lines.forEach(function(l){
       if(/perfil/i.test(l) && /fecha/i.test(l)) return; // cabecera
       var cols=l.split(/[,;\t]/).map(function(s){return s.trim();});
-      var fecha="", tipo="inicio";
-      cols.forEach(function(x){ if(/^\d{4}-\d{2}-\d{2}$/.test(x)) fecha=x; });
+      var fecha="", fi=-1, tipo="inicio";
+      cols.forEach(function(x,idx){ if(/^\d{4}-\d{2}-\d{2}$/.test(x)){ fecha=x; fi=idx; } });
       cols.forEach(function(x){ if(/disrupc/i.test(x)) tipo="disrupcion"; });
       if(!fecha) return;
       if(tipo==="disrupcion"){ data.breakthrough=data.breakthrough||[];
         if(data.breakthrough.indexOf(fecha)===-1){ data.breakthrough.push(fecha); added++; } }
-      else if(data.dates.indexOf(fecha)===-1){ data.dates.push(fecha); added++; }
+      else {
+        if(data.dates.indexOf(fecha)===-1){ data.dates.push(fecha); added++; }
+        // duración: columna 2 posiciones después de la fecha (perfil,tipo,fecha,ciclo,duracion)
+        var dv=cols[fi+2];
+        if(dv!=null && dv!=="" && !isNaN(+dv) && +dv>0 && +dv<=15){ data.durations=data.durations||{}; data.durations[fecha]=+dv; }
+      }
     });
     data.dates=data.dates.filter(Boolean);
     save(p,data); render();
@@ -209,6 +216,7 @@
 
   function render(){
     var p=state, data=load(p);
+    if(!data.durations) data.durations={};
     var isJuani=(p==="juani");
     var c=cycles(data.dates);
     var html="";
@@ -222,9 +230,11 @@
       var d=parse(ds), cyc="";
       if(prev){ cyc=diffDays(prev,d)+" d"; }
       prev=d;
+      var dur=(data.durations && data.durations[ds]!=null)?data.durations[ds]:"";
       html+='<div class="daterow"><span class="idx">'+(i+1)+'</span>'+
             '<input type="date" value="'+ds+'" data-old="'+ds+'">'+
             '<span class="cyc">'+cyc+'</span>'+
+            '<input class="dur" type="number" min="1" max="15" inputmode="numeric" placeholder="días" value="'+dur+'" data-dur="'+ds+'" title="Días que duró la regla">'+
             '<button class="x" data-del="'+ds+'" title="Quitar">×</button></div>';
     });
     html+='</div><div class="toolbar">'+
@@ -256,6 +266,32 @@
           'Se recomienda ≥6 registros para un rango confiable.</div>';
       }
       html+='</div>';
+    }
+
+    // ---- Duración de la regla ----
+    var durs=[];
+    data.dates.filter(Boolean).forEach(function(ds){
+      var v=data.durations[ds];
+      if(v!=null && v!=="" && !isNaN(+v) && +v>0) durs.push(+v);
+    });
+    if(durs.length>0){
+      var dm=mean(durs), dmn=Math.min.apply(null,durs), dmx=Math.max.apply(null,durs);
+      html+='<div class="card"><h2>Duración de la regla</h2><div class="stats">'+
+        stat("Promedio",dm.toFixed(1)+" d")+
+        stat("Rango",(dmn===dmx? dmn : dmn+"–"+dmx)+" d")+
+        stat("Registradas",durs.length)+
+      '</div>';
+      if(durs.length<3){
+        html+='<div class="note">Anota los días de cada regla en el campo "días" junto a la fecha. '+
+          'Con más registros el promedio se afina.</div>';
+      } else if(dmx>8){
+        html+='<div class="banner warn"><b>Alguna regla ≥8 días.</b> Sangrados prolongados o abundantes '+
+          'sostenidos merecen evaluación clínica (descartar causas estructurales o de coagulación).</div>';
+      }
+      html+='</div>';
+    } else {
+      html+='<div class="note" style="margin-top:-6px;margin-bottom:16px">Para calcular cuánto duran tus reglas, '+
+        'escribe los días de cada una en el campito "días" junto a cada fecha.</div>';
     }
 
     // ---- Predicción / supresión ----
@@ -360,9 +396,24 @@
     }
     panel.querySelectorAll('input[data-old]').forEach(function(inp){
       inp.onchange=function(){
-        var i=data.dates.indexOf(inp.getAttribute("data-old"));
+        var old=inp.getAttribute("data-old");
+        var i=data.dates.indexOf(old);
         if(i>-1){ data.dates[i]=inp.value; } else { data.dates.push(inp.value); }
         data.dates=data.dates.filter(Boolean);
+        // mover la duración registrada a la nueva fecha
+        if(data.durations && data.durations[old]!=null && inp.value!==old){
+          data.durations[inp.value]=data.durations[old]; delete data.durations[old];
+        }
+        save(p,data); render();
+      };
+    });
+    panel.querySelectorAll('input[data-dur]').forEach(function(inp){
+      inp.onchange=function(){
+        var ds=inp.getAttribute("data-dur");
+        data.durations=data.durations||{};
+        var v=inp.value.trim();
+        if(v==="" || isNaN(+v)) delete data.durations[ds];
+        else data.durations[ds]=+v;
         save(p,data); render();
       };
     });
