@@ -52,7 +52,10 @@
   .dates{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
   .daterow{display:flex;align-items:center;gap:10px}
   .daterow .idx{color:var(--muted);font-size:.8rem;width:18px;text-align:right}
-  .daterow .dur{width:62px;flex:none;font:inherit;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:7px 8px;text-align:center}
+  .daterow{flex-wrap:wrap}
+  .daterow .arrow{color:var(--muted);font-size:.9rem}
+  .daterow .endd{flex:1;min-width:120px;font:inherit;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:7px 8px}
+  .daterow .durtag{font-size:.78rem;color:var(--accent);font-weight:650;min-width:30px}
   input[type=date]{font:inherit;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);
     border-radius:9px;padding:8px 10px;flex:1;min-width:0}
   .cyc{color:var(--muted);font-size:.8rem;white-space:nowrap}
@@ -120,9 +123,18 @@
   var IRREG_RANGE = 9;        // rango (max-min) que marca irregularidad
 
   var DEFAULTS = {
-    cata: { dates:[], durations:{}, supActive:false, supStart:"" },
-    juani:{ dates:[], durations:{}, supActive:false, supStart:"", breakthrough:[] }
+    cata: { dates:[], ends:{}, durations:{}, supActive:false, supStart:"" },
+    juani:{ dates:[], ends:{}, durations:{}, supActive:false, supStart:"", breakthrough:[] }
   };
+  // duración de una regla: término − inicio + 1 (ambos días contados); si no hay término,
+  // cae al número suelto que se haya guardado antes. Devuelve null si no hay dato válido.
+  function durOf(data,ds){
+    var e=data.ends&&data.ends[ds];
+    if(e){ var a=parse(ds), b=parse(e); if(a&&b){ var d=diffDays(a,b)+1; if(d>0&&d<=20) return d; } }
+    var n=data.durations&&data.durations[ds];
+    if(n!=null && n!=="" && !isNaN(+n) && +n>0) return +n;
+    return null;
+  }
   var GAP_MIN = 10;   // intervalos fuera de este rango se tratan como artefacto
   var GAP_MAX = 60;   // (hueco de registro, doble carga), no como ciclo
 
@@ -162,15 +174,15 @@
   function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 
   function toCSV(p,data){
-    var rows=[["perfil","tipo","fecha","ciclo_dias","duracion_dias"]];
-    var c=cycles(data.dates), prev=null, dur=data.durations||{};
+    var rows=[["perfil","tipo","fecha_inicio","ciclo_dias","fecha_fin","duracion_dias"]];
+    var c=cycles(data.dates), prev=null, ends=data.ends||{};
     c.clean.forEach(function(d){
       var cyc = prev? diffDays(prev,d): "";
-      var ds=iso(d);
-      rows.push([p,"inicio",ds,cyc,(dur[ds]!=null?dur[ds]:"")]); prev=d;
+      var ds=iso(d), e=ends[ds]||"", du=durOf(data,ds);
+      rows.push([p,"inicio",ds,cyc,e,(du!=null?du:"")]); prev=d;
     });
     (data.breakthrough||[]).slice().filter(Boolean).sort().forEach(function(ds){
-      rows.push([p,"disrupcion",ds,"",""]);
+      rows.push([p,"disrupcion",ds,"","",""]);
     });
     return rows.map(function(r){return r.join(",");}).join("\n");
   }
@@ -196,17 +208,19 @@
     lines.forEach(function(l){
       if(/perfil/i.test(l) && /fecha/i.test(l)) return; // cabecera
       var cols=l.split(/[,;\t]/).map(function(s){return s.trim();});
-      var fecha="", fi=-1, tipo="inicio";
-      cols.forEach(function(x,idx){ if(/^\d{4}-\d{2}-\d{2}$/.test(x)){ fecha=x; fi=idx; } });
+      var fechas=[], tipo="inicio";
+      cols.forEach(function(x){ if(/^\d{4}-\d{2}-\d{2}$/.test(x)) fechas.push(x); });
       cols.forEach(function(x){ if(/disrupc/i.test(x)) tipo="disrupcion"; });
+      var fecha=fechas[0]||"";
       if(!fecha) return;
       if(tipo==="disrupcion"){ data.breakthrough=data.breakthrough||[];
         if(data.breakthrough.indexOf(fecha)===-1){ data.breakthrough.push(fecha); added++; } }
       else {
         if(data.dates.indexOf(fecha)===-1){ data.dates.push(fecha); added++; }
-        // duración: columna 2 posiciones después de la fecha (perfil,tipo,fecha,ciclo,duracion)
-        var dv=cols[fi+2];
-        if(dv!=null && dv!=="" && !isNaN(+dv) && +dv>0 && +dv<=15){ data.durations=data.durations||{}; data.durations[fecha]=+dv; }
+        // segunda fecha de la fila = término de la regla
+        if(fechas[1] && parse(fechas[1]) && parse(fechas[1])>=parse(fecha)){
+          data.ends=data.ends||{}; data.ends[fecha]=fechas[1];
+        }
       }
     });
     data.dates=data.dates.filter(Boolean);
@@ -217,6 +231,7 @@
   function render(){
     var p=state, data=load(p);
     if(!data.durations) data.durations={};
+    if(!data.ends) data.ends={};
     var isJuani=(p==="juani");
     var c=cycles(data.dates);
     var html="";
@@ -230,11 +245,14 @@
       var d=parse(ds), cyc="";
       if(prev){ cyc=diffDays(prev,d)+" d"; }
       prev=d;
-      var dur=(data.durations && data.durations[ds]!=null)?data.durations[ds]:"";
+      var endv=(data.ends && data.ends[ds])?data.ends[ds]:"";
+      var dOut=durOf(data,ds);
       html+='<div class="daterow"><span class="idx">'+(i+1)+'</span>'+
-            '<input type="date" value="'+ds+'" data-old="'+ds+'">'+
+            '<input type="date" value="'+ds+'" data-old="'+ds+'" title="Inicio">'+
             '<span class="cyc">'+cyc+'</span>'+
-            '<input class="dur" type="number" min="1" max="15" inputmode="numeric" placeholder="días" value="'+dur+'" data-dur="'+ds+'" title="Días que duró la regla">'+
+            '<span class="arrow">→</span>'+
+            '<input class="endd" type="date" value="'+endv+'" min="'+ds+'" data-end="'+ds+'" title="Término de la regla">'+
+            '<span class="durtag">'+(dOut!=null? dOut+" d" : "")+'</span>'+
             '<button class="x" data-del="'+ds+'" title="Quitar">×</button></div>';
     });
     html+='</div><div class="toolbar">'+
@@ -271,8 +289,8 @@
     // ---- Duración de la regla ----
     var durs=[];
     data.dates.filter(Boolean).forEach(function(ds){
-      var v=data.durations[ds];
-      if(v!=null && v!=="" && !isNaN(+v) && +v>0) durs.push(+v);
+      var v=durOf(data,ds);
+      if(v!=null) durs.push(v);
     });
     if(durs.length>0){
       var dm=mean(durs), dmn=Math.min.apply(null,durs), dmx=Math.max.apply(null,durs);
@@ -282,7 +300,7 @@
         stat("Registradas",durs.length)+
       '</div>';
       if(durs.length<3){
-        html+='<div class="note">Anota los días de cada regla en el campo "días" junto a la fecha. '+
+        html+='<div class="note">Marca inicio y término de cada regla; la app calcula los días. '+
           'Con más registros el promedio se afina.</div>';
       } else if(dmx>8){
         html+='<div class="banner warn"><b>Alguna regla ≥8 días.</b> Sangrados prolongados o abundantes '+
@@ -291,7 +309,7 @@
       html+='</div>';
     } else {
       html+='<div class="note" style="margin-top:-6px;margin-bottom:16px">Para calcular cuánto duran tus reglas, '+
-        'escribe los días de cada una en el campito "días" junto a cada fecha.</div>';
+        'marca el <b>término</b> de cada una en el segundo campo de fecha (junto al inicio). La app calcula los días sola.</div>';
     }
 
     // ---- Predicción / supresión ----
@@ -359,12 +377,15 @@
       // ovulación hacia atrás
       var ov=addDays(next,-LUTEAL);
       var fStart=addDays(ov,-FERTILE_BEFORE), fEnd=addDays(ov,FERTILE_AFTER);
-      html+='<div class="stats" style="margin-top:14px">'+
-        stat("Ovulación aprox.",fmtShort(ov))+
-        stat("Ventana fértil",fmtShort(fStart)+"–"+fmtShort(fEnd))+
+      html+='<h2 style="margin-top:20px">Ovulación y ventana fértil</h2>';
+      html+='<div class="pred">Ovulación aprox.: <b style="color:var(--accent)">'+fmt(ov)+'</b></div>';
+      html+='<div class="stats" style="margin-top:10px">'+
+        stat("Día fértil desde",fmtShort(fStart))+
+        stat("Día fértil hasta",fmtShort(fEnd))+
       '</div>';
-      html+='<div class="note">Ovulación estimada restando '+LUTEAL+' d a la regla esperada (fase lútea). '+
-        'Válido solo si los ciclos son ovulatorios y regulares.</div>';
+      html+='<div class="note">Estimada restando '+LUTEAL+' días (fase lútea) a la próxima regla esperada, '+
+        'no contando hacia adelante desde la última. Válida solo con ciclos ovulatorios y regulares; '+
+        'no sirve como método anticonceptivo ni confirma ovulación real.</div>';
     } else {
       html+='<div class="note">Necesitas al menos 2 fechas para estimar un intervalo.</div>';
     }
@@ -400,20 +421,22 @@
         var i=data.dates.indexOf(old);
         if(i>-1){ data.dates[i]=inp.value; } else { data.dates.push(inp.value); }
         data.dates=data.dates.filter(Boolean);
-        // mover la duración registrada a la nueva fecha
-        if(data.durations && data.durations[old]!=null && inp.value!==old){
-          data.durations[inp.value]=data.durations[old]; delete data.durations[old];
+        // mover el término / duración registrados a la nueva fecha de inicio
+        if(inp.value!==old){
+          if(data.ends && data.ends[old]!=null){ data.ends[inp.value]=data.ends[old]; delete data.ends[old]; }
+          if(data.durations && data.durations[old]!=null){ data.durations[inp.value]=data.durations[old]; delete data.durations[old]; }
         }
         save(p,data); render();
       };
     });
-    panel.querySelectorAll('input[data-dur]').forEach(function(inp){
+    panel.querySelectorAll('input[data-end]').forEach(function(inp){
       inp.onchange=function(){
-        var ds=inp.getAttribute("data-dur");
-        data.durations=data.durations||{};
-        var v=inp.value.trim();
-        if(v==="" || isNaN(+v)) delete data.durations[ds];
-        else data.durations[ds]=+v;
+        var ds=inp.getAttribute("data-end");
+        data.ends=data.ends||{};
+        var v=inp.value;
+        if(!v){ delete data.ends[ds]; }
+        else if(parse(v) && parse(v)<parse(ds)){ alert("El término no puede ser antes del inicio."); return; }
+        else { data.ends[ds]=v; if(data.durations) delete data.durations[ds]; }
         save(p,data); render();
       };
     });
